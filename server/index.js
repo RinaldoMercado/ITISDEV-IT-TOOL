@@ -25,7 +25,9 @@ app.get('/api/tutees/:tutorId', (req, res) => {
             u.last_name, 
             u.proficiency_level,
             m.module_title as currentModule,
+            m.module_description as currentModuleDesc,
             l.lesson_title as currentLesson,
+            l.lesson_description as currentLessonDesc,
             (SELECT COUNT(*) FROM quiz_attempts qa WHERE qa.user_id = u.user_id AND qa.passed = 1) as completedQuizzes,
             (SELECT COUNT(*) FROM quiz_attempts qa WHERE qa.user_id = u.user_id) as totalQuizAttempts
         FROM users u

@@ -50,18 +50,34 @@ const handleGenerateSummary = async (tutee) => {
     
     // 1. Build the specific prompt using DB data
     const prompt = `
-      Analyze this student's progress for a tutor report:
-      Name: ${tutee.name}
-      Level: ${tutee.proficiencyLevel}
-      Current Module: ${tutee.currentModule}
-      Current Lesson: ${tutee.currentLesson}
-      Quiz Stats: ${tutee.completedQuizzes} passed out of ${tutee.totalQuizAttempts} attempts.
-      
-      Format the response with these headers: 
-      ### Overview
-      ### Areas to Work On
-      ### Suggested Assignments
-      Use bullet points for the lists.
+        You are an ai assistant to help tutors teaching Filipino Sign Language get a summary of their 
+        tutee's capabilities and current progress with their learning materials as well as their previous 
+        attempts at  quizzes. You will be provided the tutee to analyze, alongside all the information from 
+        their completed lessons and quizzes. For this particular tutee this is the information provided:
+
+        TUTEE PROFILE:
+          - Name: ${tutee.name}
+          - Level: ${tutee.proficiencyLevel}
+                
+        CURRICULUM CONTEXT:
+          - Active Module: "${tutee.currentModule}"
+          Description: ${tutee.currentModuleDesc || 'No description available'}
+          - Active Lesson: "${tutee.currentLesson}"
+          Description: ${tutee.currentLessonDesc || 'No description available'}
+
+       PERFORMANCE DATA:
+          - Quiz Success: ${tutee.completedQuizzes} passed out of ${tutee.totalQuizAttempts} attempts.
+
+       TASK:
+          Provide a summary for the tutor. The "Areas to work on" and "Suggested assignments" must be 
+          specifically tailored to the content described in the Active Module and Lesson descriptions.
+          Remember to use the context of Filipino Sign Language when you provide your overview, areas
+          to work on, and suggested assignments.
+
+        FORMAT:
+         📝Overview: (1-2 sentences MAX)
+         ❗Areas to work on: (Max 3 bullets)
+         📚Suggested assignments: (Max 3 bullets)
     `;
 
     try {
