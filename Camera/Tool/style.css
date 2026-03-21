@@ -1,0 +1,28 @@
+:root {
+  --brand-green: #39c64a;
+  --brand-green-soft: #7ee37e;
+  --brand-green-dark: #1f7c31;
+  --mint: #e8f3ec;
+  --card-white: #ffffff;
+  --card-gray: #e6ece8;
+  --text-dark: #1f1f1f;
+  --text-muted: #6a6a6a;
+  --black: #000000;
+
+  --font-regular: fonts/inter/Inter-Regular.otf;
+  --font-bold: fonts/inter/Inter-Bold.otf;
+
+  --window-main: ManuMano;
+  --window-base: ManuMano Base;
+  --window-lesson: ManuMano Lesson;
+  --window-freestyle: ManuMano Freestyle;
+
+  --menu-outer-margin-ratio: 0.05;
+  --menu-gap-ratio: 0.03;
+  --menu-card-max-height: 190;
+  --menu-card-y-ratio: 0.38;
+  --menu-button-radius: 34;
+  --menu-loading-steps: 9;
+
+  --mode-loading-steps: 4;
+}
