@@ -17,7 +17,7 @@ const db = mysql.createConnection({
 app.get('/api/tutees/:tutorId', (req, res) => {
     const { tutorId } = req.params;
     
-    // This query joins users with modules and lessons, and counts quiz attempts
+    // Updated query to match your schema column names
     const query = `
         SELECT 
             u.user_id as id, 
@@ -25,9 +25,9 @@ app.get('/api/tutees/:tutorId', (req, res) => {
             u.last_name, 
             u.proficiency_level,
             m.module_title as currentModule,
-            m.module_description as currentModuleDesc,
+            m.description as currentModuleDesc,
             l.lesson_title as currentLesson,
-            l.lesson_description as currentLessonDesc,
+            l.description as currentLessonDesc,
             (SELECT COUNT(*) FROM quiz_attempts qa WHERE qa.user_id = u.user_id AND qa.passed = 1) as completedQuizzes,
             (SELECT COUNT(*) FROM quiz_attempts qa WHERE qa.user_id = u.user_id) as totalQuizAttempts
         FROM users u
@@ -37,7 +37,10 @@ app.get('/api/tutees/:tutorId', (req, res) => {
     `;
 
     db.query(query, [tutorId], (err, results) => {
-        if (err) return res.status(500).json(err);
+        if (err) {
+            console.error("SQL Error:", err.sqlMessage);
+            return res.status(500).json({ error: err.sqlMessage });
+        }
         res.json(results);
     });
 });

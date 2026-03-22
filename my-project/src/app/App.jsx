@@ -16,22 +16,28 @@ export default function App() {
   // Replace '2' with the actual logged-in tutor's ID
   const currentTutorId = 1; 
 
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/tutees/${currentTutorId}`)
-      .then(res => res.json())
-      .then(data => {
-        // Map the DB fields to match your TuteeCard expectations if necessary
-        const formattedData = data.map(t => ({
-          ...t,
-          name: `${t.first_name} ${t.last_name}`,
-          initial: t.first_name[0],
-          proficiencyLevel: t.proficiency_level === 1 ? 'Beginner' : 'Intermediate' 
-        }));
-        setTutees(formattedData);
-        setLoading(false);
-      })
-      .catch(err => console.error("Error fetching tutees:", err));
-  }, []);
+ useEffect(() => {
+  fetch(`http://localhost:5000/api/tutees/${currentTutorId}`)
+    .then(res => {
+        if (!res.ok) throw new Error("Server error");
+        return res.json();
+    })
+    .then(data => {
+      const formattedData = data.map(t => ({
+        ...t,
+        // Safety: Ensure t.first_name exists before accessing [0]
+        name: t.first_name ? `${t.first_name} ${t.last_name}` : "Unknown Student",
+        initial: t.first_name ? t.first_name[0] : "?",
+        proficiencyLevel: t.proficiency_level === 1 ? 'Beginner' : 'Intermediate' 
+      }));
+      setTutees(formattedData);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error("Error fetching tutees:", err);
+      setLoading(false);
+    });
+}, []);
 
   const filteredTutees = tutees.filter(tutee =>
     tutee.name.toLowerCase().includes(searchQuery.toLowerCase())
